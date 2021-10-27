@@ -1,0 +1,19 @@
+{
+  "name": "projet_6_",
+  "version": "1.0.0",
+  "description": "Projet_6_Piiquante",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "LHERMITE_Clemence",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.12",
+    "mongoose-unique-validator": "^3.0.0",
+    "multer": "^1.4.3"
+  }
+}
