@@ -60,7 +60,7 @@ exports.deleteSauce = (req, res, next) => {
 		/* On supprime l'image via "fs.unlink" et on utilise la fonction "deleteOne" de mongoose pour supprimer l'objet sauce concernée par l'ID */
 		fs.unlink(`images/${filename}`, () => {
 			Sauce.deleteOne({ _id: req.params.id })
-			.then(() => res.status(200).json({ message: 'Sauce supprimé !'}))
+			.then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
 			.catch(error => res.status(400).json({ error }));
 		});
 	})
