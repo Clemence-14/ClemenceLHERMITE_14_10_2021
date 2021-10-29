@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
     password : {type : String, required : true }
 });
 
-//Ajoute le vérificateur d'email unqiue au schema
+//Ajoute le vérificateur d'email unique au schéma
 userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('User', userSchema);
