@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 app.use(express.json());    //Remplace bodyParser
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes);
-app.use('/api/sauce', sauceRoute);
+app.use('/api/sauces', sauceRoute);
 
 
 
