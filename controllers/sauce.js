@@ -40,8 +40,8 @@ exports.getOneSauce = (req, res, next) => {
 
 exports.getAllSauces = (req, res, next) => {
 	Sauce.find()
-	.then((sauces) => {
-		res.status(200).json(sauces);
+	.then((sauce) => {
+		res.status(200).json(sauce);
 	})
 	.catch((error) => {
 		res.status(400).json({ error: error});
@@ -49,43 +49,22 @@ exports.getAllSauces = (req, res, next) => {
 };
 		
 
-/* Update - Met à jour une sauce, deux façon, selon si une image est modifié ou non */
+/* Update - Met à jour les informations de la sauce */
 exports.modifySauce = (req, res, next) => {
-
-	const userId = req.body.userId;
-	const jwtUserId = parseJwt(req.headers.authorization.split(" ")[1]).userId;
-	if (userId !== jwtUserId) {
-		res.status(403).json({ message: `unauthorized request` })
-		return null;
-	}
-
-	/* Si un image est modifiée, supprime l'image précédente trouvé via la fonction "findOne" (ID) et supprime l'image*/
-	if (req.file) {
-		Sauce.findOne({ _id: req.params.id })
-		.then((sauce) => {
-			// if (!sauce.imageUrl) {
-				fs.unlinkSync(sauce.imageUrl.substring(22))
-			// }
-		});
-	}
-
-	
+	/* Update via "updateOne" pour actualisé la BDD de la sauce concernée */
+	Sauce.updateOne( { _id: req.params.id }, { ...req.body, _id: req.params.id } )
+	.then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
+	.catch(error => res.status(400).json({ error }));
+}
 
 
 /* Delete - Supprime l'objet sauce de la BDD et l'image sauvegardé*/
 exports.deleteSauce = (req, res, next) => {
-	Sauce.findOne({ _id: req.params.id })
-	.then((sauce) => {
-		const filename = sauce.imageUrl.split('/images/')[1];
-		/* On supprime l'image via "fs.unlink" et on utilise la fonction "deleteOne" de mongoose pour supprimer l'objet sauce concernée par l'ID */
-		fs.unlink(`images/${filename}`, () => {
 			Sauce.deleteOne({ _id: req.params.id })
 			.then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
-			.catch(error => res.status(400).json({ error }));
-		});
-	})
-	.catch(error => res.status(500).json({ error }));
-};
+			.catch(error => res.status(400).json({ error }))
+		}
+	
 
 
 /*
@@ -93,4 +72,3 @@ CRUD - Create Read Update Delete
 ***********/
 
 
-}
