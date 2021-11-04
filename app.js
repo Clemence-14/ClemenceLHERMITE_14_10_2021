@@ -35,6 +35,11 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoute);
 
+app.put('/api/sauces/:id', (req, res, next) => {
+  Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
+    .catch(error => res.status(400).json({ error }));
+});
 
 
 module.exports = app;
