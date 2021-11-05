@@ -8,11 +8,12 @@ const MIME_TYPES = {
     'image/png': 'png'
 };
 
+// Configuration qui contient la logique à indiquer à multer et où enregistrer les fichiers entrants
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, 'images')
+        callback(null, 'images') // Images qui s'enregistrent dans le dossier images
     },
-    filename: (req, file, callback) => {
+    filename: (req, file, callback) => { // Indique à multer d'utiliser le nom d'origine, de remplacer les espaces par des underscores et d'ajouterun timestamp Datenow() comme nom de fichier
         const name = file.originalname.split('').join('_');
         const extension = MIME_TYPES[file.mimetype];
         callback(null, name + Date.now() + '.' + extension);
