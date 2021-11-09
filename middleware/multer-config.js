@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'images') // Images qui s'enregistrent dans le dossier images
     },
-    filename: (req, file, callback) => { // Indique à multer d'utiliser le nom d'origine, de remplacer les espaces par des underscores et d'ajouterun timestamp Datenow() comme nom de fichier
+    filename: (req, file, callback) => { // Indique à multer d'utiliser le nom d'origine, de remplacer les espaces par des underscores et d'ajouter un timestamp Datenow() comme nom de fichier
         const name = file.originalname.split('').join('_');
         const extension = MIME_TYPES[file.mimetype];
         callback(null, name + Date.now() + '.' + extension);
@@ -21,4 +21,5 @@ const storage = multer.diskStorage({
     }
 });
 
+// Exportation du module multer en lui passant la constante storage et en lui indiquant que l'on ne gère que les dossiers images
 module.exports = multer({ storage }).single('image');
