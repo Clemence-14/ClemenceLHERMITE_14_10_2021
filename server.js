@@ -1,5 +1,5 @@
-const http = require('http');
-const app = require('./app');
+const http = require('http');  // On importe le package http de node
+const app = require('./app');  // Importation de app 
 
 // Renvoi un port valide
 const normalizePort = val => {
