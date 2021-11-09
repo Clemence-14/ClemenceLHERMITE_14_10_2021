@@ -1,6 +1,6 @@
 /* Importe le modèle sauce, exporté du document "sauce.js" */
 const Sauce = require('../models/sauce');
-/* Importe la librairie qui permet de gérer les "Files Systems" */
+/* Importe la librairie qui permet de gérer les "Files Systems", et donne accès aux fonctions qui permettent de modifier le sysytème de fichiers, y compris aux focntions permettant de supprimer les fichiers */
 const fs = require('fs');
 
 
