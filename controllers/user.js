@@ -8,10 +8,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 
+////SIGNUP - Fonction pour créer un utilisateur dans la BDD////
 
-/***********
-SIGNUP - Fonction pour créer une utilisateurs dans la BDD
-*/
 exports.signup = (req, res, next) => {
     /* Hash le mot de passe avant de le stocker */
     bcrypt.hash(req.body.password, 10)
@@ -20,21 +18,18 @@ exports.signup = (req, res, next) => {
             email: req.body.email,
             password: hash
         });
-        /* Sauve l'utilisateur dans la BDD, email et mot de passe (hashé avec Bcrypt)  */
+        /* Sauvegarde l'utilisateur dans la BDD, email et mot de passe (hashé avec Bcrypt)  */
         user.save()
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
         .catch(error => res.status(400).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
 };
-/*
-SIGNUP - Fonction pour créer une utilisateurs dans la BDD
-***********/
 
 
 
 /***********
-LOGIN - Fonction pour se connecter en tant qu'utilisateur, si trouvé dans la BDD et si les logins sont valides
+LOGIN - Fonction pour se connecter en tant qu'utilisateur se trouvant dans la BDD et si les logins sont valides
 */
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
