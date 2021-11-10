@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongodberrors = require('mongoose-mongodb-errors');
 
 const sauceSchema = mongoose.Schema({
 
