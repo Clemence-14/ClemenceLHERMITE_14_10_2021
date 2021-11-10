@@ -21,7 +21,7 @@ exports.signup = (req, res, next) => {
         /* Sauvegarde l'utilisateur dans la BDD, email et mot de passe (hashé avec Bcrypt)  */
         user.save()
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(() => res.status(400).json({ message: 'Email déjà utilisé !' }));
     })
     .catch(error => res.status(500).json({ error }));
 };
