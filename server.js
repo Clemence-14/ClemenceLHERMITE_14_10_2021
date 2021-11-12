@@ -16,7 +16,7 @@ const normalizePort = val => {
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-// Recherche les différentes erreurs et les gèrent de manière appropriée
+// Recherche les différentes erreurs et les gèrent de manière appropriée, elle est ensuite enregistrée dans le serveur
 const errorHandler = error => {
   if (error.syscall !== 'listen') { 
     throw error;
