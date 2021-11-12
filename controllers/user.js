@@ -1,7 +1,7 @@
 /* Importe la librairie "bcrypt" afin de hasher les mots de passes et de comparer les mots de passes encodés */
 const bcrypt = require('bcrypt');
 
-/* Importer la librairie "jsonwebtoken" pour utiliser les Tokens */
+/* Importer la librairie "jsonwebtoken" pour pouvoir créer et vérifier les tokens d'authentification */
 const jwt = require('jsonwebtoken');
 
 /* Importe le modèle user, exporté du document "user.js" */
@@ -12,7 +12,7 @@ const User = require('../models/user');
 
 exports.signup = (req, res, next) => {
     /* Hash le mot de passe avant de le stocker */
-    bcrypt.hash(req.body.password, 10)
+    bcrypt.hash(req.body.password, 10) // Nombre de fois où l'on fait le tour de l'algorithme
     .then(hash => {
         const user = new User({
             email: req.body.email,
@@ -45,8 +45,8 @@ exports.login = (req, res, next) => {
             }
             res.status(200).json({
                 userId: user._id,
-                token: jwt.sign(
-                    { userId: user._id },
+                token: jwt.sign(  // Pour encoder un nouveau token
+                    { userId: user._id }, // Id utilisateur
                     // Clé pour l'encodage
                     process.env.JWT_SECRET,
                     //Chaque token durera 24 heures
