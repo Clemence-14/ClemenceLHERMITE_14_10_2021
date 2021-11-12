@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 
 //app.use(bodyParser.json());  //deprecated
 app.use(express.json());    //Remplace bodyParser
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images'))); // Indique à express qu'il faut gérer la ressource images de manière statique à chaque fois qu'elle reçoit une requête vers la route /images
 app.use('/api/auth', userRoutes); // On enregistre le routeur pour toutes les demandes effectuées vers api/auth
 app.use('/api/sauces', sauceRoute);
 
