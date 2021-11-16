@@ -3,10 +3,10 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
     try {
-        //On extraie le token du header authorization de la requête entrante, on utilise split pour tout récupérer après l'espace dans le header
+        //On extraie le token du header authorization de la requête entrante, on utilise split pour tout récupérer après bearer dans le header
         const token = req.headers.authorization.split(' ')[1];
         console.log('token' + token)
-        //Pour décoder le token
+        //Pour décoder le token avec verify
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         //On extraie l'id de l'utilisateur du token
         const userId = decodedToken.userId;
