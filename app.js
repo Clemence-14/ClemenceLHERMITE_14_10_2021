@@ -11,7 +11,7 @@ const app = express();
 const dotenv = require('dotenv');
 const result = dotenv.config();
 
-//Connection à mongoDB
+//Connexion à mongoDB
 mongoose.connect(`mongodb+srv://${process.env.APP_USERNAME}:${process.env.APP_PASSWORD}@cluster0.ztcle.mongodb.net/${process.env.APP_NAME}?retryWrites=true&w=majority`,
 
   { useNewUrlParser: true,
@@ -21,7 +21,7 @@ mongoose.connect(`mongodb+srv://${process.env.APP_USERNAME}:${process.env.APP_PA
 
   
 //CORS
-// Permet de d'accéder à notre api depuis n'importe quelle origine (*)
+// Permet d'accéder à notre api depuis n'importe quelle origine (*)
 // Permet d'ajouter les headers mentionnés aux requêtes envoyées vers l'api (Origin, X-Requested-With...)
 // Permet d'envoyer des requêtes avec les méthodes mentionnées (get, post...)
 app.use((req, res, next) => {
