@@ -1,7 +1,8 @@
 /* Importe le modèle sauce, exporté du document "sauce.js" */
 const Sauce = require('../models/sauce');
-/* Importe la librairie qui permet de gérer les "Files Systems", et donne accès aux fonctions qui permettent de modifier le sysytème de fichiers, y compris aux focntions permettant de supprimer les fichiers */
+/* Importe la librairie qui permet de gérer les "Files Systems", et donne accès aux fonctions qui permettent de modifier le système de fichiers, y compris aux fonctions permettant de supprimer les fichiers */
 const fs = require('fs');
+const sauce = require('../models/sauce');
 
 
 
@@ -65,12 +66,19 @@ exports.modifySauce = (req, res, next) => {
 }
 
 
-/* Delete - Supprime l'objet sauce de la BDD et l'image sauvegardé*/
+/* Delete - Supprime l'objet sauce de la BDD et l'image sauvegardée */
 exports.deleteSauce = (req, res, next) => {
-			Sauce.deleteOne({ _id: req.params.id })
+	Sauce.findOne({ _id: req.params.id }) // Utilisation de l'id que l'on reçoit comme paramètre pour accéder à la sauce correspondante dans la base de donnée
+	  .then(sauce => {
+		const filename = sauce.imageUrl.split('/images/')[1];
+		fs.unlink(`images/${filename}`, () => {  // Fonction unlink de fs pour supprimer l'image en lui passant l'image à supprimer
+		  Sauce.deleteOne({ _id: req.params.id })  // Suppression de la sauce dans la bdd avec deleteOne
 			.then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
-			.catch(error => res.status(400).json({ error }))
-		}
+			.catch(error => res.status(400).json({ error }));
+		});
+	  })
+	  .catch(error => res.status(500).json({ error }));
+  };
 	
 /*
 CRUD - Create Read Update Delete
@@ -83,7 +91,7 @@ exports.evaluateSauce = (req, res, next) => {
 	if( req.body.like === 0 ){
 	  Sauce.findOne({ _id: req.params.id})
 	  .then((sauce) => {
-		//si l'utilisateur a déjà like la sauce, on enlève le like et on l'enlève des usersLiked
+		//si l'utilisateur a déjà liker la sauce, on enlève le like et on l'enlève des usersLiked
 		if(sauce.usersLiked.find(user => user === req.body.userId)){
 		  Sauce.updateOne(
 			{ _id: req.params.id },
@@ -96,7 +104,7 @@ exports.evaluateSauce = (req, res, next) => {
 		  .catch(error => { res.status(400).json({ error })
 		  });
 		}
-		//si l'utilisateur a déjà dislike la sauce, on enlève le dislike et on l'enlève des usersDisLiked
+		//si l'utilisateur a déjà disliker la sauce, on enlève le dislike et on l'enlève des usersDisLiked
 		if(sauce.usersDisliked.find(user => user === req.body.userId)){
 		  Sauce.updateOne(
 			{ _id: req.params.id },
@@ -112,7 +120,7 @@ exports.evaluateSauce = (req, res, next) => {
 	  })
 	  .catch((error) => {res.status(400).json({ error })});
 	}
-	//si l'utilisateur n'a pas déjà like la sauce, on rajoute le like et on l'ajoute aux usersLiked
+	//si l'utilisateur n'a pas déjà liker la sauce, on rajoute le like et on l'ajoute aux usersLiked
 	if( req.body.like === 1 ){
 	  Sauce.updateOne(
 		{ _id: req.params.id },
@@ -125,7 +133,7 @@ exports.evaluateSauce = (req, res, next) => {
 	  .catch(error => { res.status(400).json({ error })
 	  });
 	}
-	//si l'utilisateur n'a pas déjà dislike la sauce, on rajoute le like et on l'ajoute aux usersdisLiked
+	//si l'utilisateur n'a pas déjà disliker la sauce, on rajoute le like et on l'ajoute aux usersdisLiked
 	if( req.body.like === -1 ){
 	  Sauce.updateOne(
 		{ _id: req.params.id },
